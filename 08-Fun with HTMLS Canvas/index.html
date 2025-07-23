@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d"); // Where we do all our drawing in a Canvas
+
+      // Need a color to start drawing
+      ctx.strokeStyle = "#BADA55";
+      // End of the line
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 25;
+
+      // Flag to know if we hace pressed or not the button
+      let isDrawing = false;
+      // Coordinate to draw
+      let lastX = 0;
+      let lastY = 0;
+
+      // Called everytime I move the mouse on the canvas
+      function draw(e) {
+        if (!isDrawing) return; // Stop the function if no button is pressed
+        console.log(e);
+        ctx.beginPath();
+        // We start with an X/Y and we end with a new X/Y
+        ctx.moveTo(lastX, lastY);
+        // We go to a new coordinate
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        // Update the variable so that the new line start form the latest point and not always from the beginning
+        (lastX = e.offsetX), (lastY = e.offsetY);
+      }
+
+      // Listen to the mousemove event on the canvas
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        // We udpate the position before any movement
+        (lastX = e.offsetX), (lastY = e.offsetY);
+      });
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false)); // It exits the available screen
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
+</html>
